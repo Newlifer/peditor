@@ -1,0 +1,104 @@
+import { Button, VerticalBox } from "std-widgets.slint";
+
+component ColorTile inherits Rectangle {
+    width: 32px;
+    height: 32px;
+    background: #3960D5;
+}
+
+struct ColorTileData {
+    colour: color,
+    // name: string,
+    index: string,
+    // comment: string,
+}
+
+export component ColorBox inherits Window {
+
+    in-out property <[ColorTileData]> canvas_color_tiles: [
+    ];
+
+    height: 79px;
+
+    VerticalBox {
+        spacing: 5px;
+
+        HorizontalLayout {
+            alignment: center;
+            spacing: 5px;
+    
+            for tile[i] in canvas_color_tiles : ColorTile {
+                width: 32px;
+                height: 32px;
+                background: tile.colour;
+            }
+        }
+        HorizontalLayout {
+            alignment: center;
+            spacing: 5px;
+    
+            for tile[i] in canvas_color_tiles : ColorTile {
+                width: 32px;
+                height: 32px;
+                background: tile.colour;
+            }
+        }
+    }
+}
+
+export component AppWindow inherits Window {
+    title: "Peditor";
+    min-width: 800px;
+    min-height: 600px;
+
+    in-out property <[ColorTileData]> canvas_color_tiles: [
+    ];
+
+    callback exit_editor();
+
+    MenuBar {
+        Menu {
+            title: @tr("File");
+            MenuItem {
+                title: @tr("New");
+            }
+            MenuItem {
+                title: @tr("Open");
+            }
+            MenuItem {
+                title: @tr("Save");
+            }
+            MenuItem {
+                title: @tr("Save as");
+            }
+            MenuItem {
+                title: @tr("Exit");
+                activated => { root.exit_editor(); }
+            }
+        }
+        Menu {
+            title: @tr("Edit");
+        }
+    }
+
+    VerticalLayout {
+        spacing: 5px;
+        alignment: end;
+
+        VerticalLayout {
+            alignment: stretch;
+            HorizontalLayout {
+                alignment: stretch;
+                Rectangle {
+                    background: #90918a;
+                    min-height: 500px;
+                    min-width: 600px;
+                }
+            }
+        }
+
+        reference_colors := ColorBox {
+            canvas_color_tiles: canvas_color_tiles;
+        }
+    }
+}
